@@ -24,7 +24,6 @@ public class FileDownloadingThread extends Thread {
         download(pathFromDownload, pathToSave);
     }
 
-
     private void download(String sourceURL, String targetDirectory) {
 
         try {

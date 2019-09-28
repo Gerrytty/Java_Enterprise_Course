@@ -6,13 +6,17 @@ import java.net.URLConnection;
 public class Main {
     public static void main(String[] args) {
 
+        if(args.length == 0) {
+            System.out.println("Empty args");
+            System.exit(0);
+        }
+
         if (!netIsAvailable()) {
             System.out.println("\u001B[31m" + "NO INTERNET" + "\u001B[0m");
             System.exit(0);
         }
 
-        System.out.println("\u001B[30m" + "Start dowloanding");
-
+        System.out.println("Start dowloanding");
         String pathToSaveFile = createFolder();
 
         for (String arg : args) {

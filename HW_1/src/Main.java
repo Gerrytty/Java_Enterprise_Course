@@ -16,11 +16,11 @@ public class Main {
             System.exit(0);
         }
 
-        System.out.println("Start dowloanding");
+        System.out.println("Start downloading");
         String pathToSaveFile = createFolder();
 
         for (String arg : args) {
-            FileDowloandingThread thread = new FileDowloandingThread(arg, pathToSaveFile);
+            FileDownloadingThread thread = new FileDownloadingThread(arg, pathToSaveFile);
             thread.run();
         }
 
@@ -42,13 +42,13 @@ public class Main {
 
 
     /***
-     * creating folder "dowloands" in current directory for saving files
+     * creating folder "downloads" in current directory for saving files
      *
      * @return path to this folder
      ***/
     private static String createFolder() {
         String currentPath = System.getProperty("user.dir");
-        String pathToSaveFile = currentPath + "/dowloands";
+        String pathToSaveFile = currentPath + "/downloads";
 
         File file = new File(pathToSaveFile);
         if(!file.isDirectory()) {

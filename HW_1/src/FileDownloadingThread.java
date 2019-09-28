@@ -5,27 +5,27 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 
-public class FileDowloandingThread extends Thread {
+public class FileDownloadingThread extends Thread {
     // colors
     private static final String ANSI_RESET = "\u001B[0m";
     private static final String ANSI_RED = "\u001B[31m";
     private static final String ANSI_GREEN = "\u001B[32m";
 
-    private String pathFromDowloand;
+    private String pathFromDownload;
     private String pathToSave;
 
-    public FileDowloandingThread(String pathFromDowloand, String pathToSave) {
-        this.pathFromDowloand = pathFromDowloand;
+    public FileDownloadingThread(String pathFromDowloand, String pathToSave) {
+        this.pathFromDownload = pathFromDowloand;
         this.pathToSave = pathToSave;
     }
 
     @Override
     public void run() {
-        downloand(pathFromDowloand, pathToSave);
+        download(pathFromDownload, pathToSave);
     }
 
 
-    private void downloand(String sourceURL, String targetDirectory) {
+    private void download(String sourceURL, String targetDirectory) {
 
         try {
             URL url = new URL(sourceURL);

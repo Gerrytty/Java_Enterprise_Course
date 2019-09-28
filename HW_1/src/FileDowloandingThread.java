@@ -75,7 +75,7 @@ public class FileDowloandingThread extends Thread {
         else {
             return fileName;
         }
-        
+
     }
 
     private boolean isNum(char c) {

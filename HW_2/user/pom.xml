@@ -1,0 +1,48 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>test</groupId>
+    <artifactId>downloderTest</artifactId>
+    <version>0.0.1</version>
+
+<repositories>
+    <repository>
+        <id>localrep</id>
+        <name>local repository</name>
+        <url>file:${project.basedir}/lib</url>
+    </repository>
+</repositories>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>downloader</groupId>
+            <artifactId>app</artifactId>
+            <version>0.0.1</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <sourceDirectory>main/java</sourceDirectory>
+        <testSourceDirectory>test/java</testSourceDirectory>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>testingDowloader.Main</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>

@@ -9,14 +9,14 @@ import java.util.Properties;
 
 public class ChatServerStartMain {
     public static void main(String[] args) {
-//        int port = Integer.parseInt(args[0].substring(args[0].lastIndexOf("=") + 1));
-//        String path = args[1].substring(args[1].lastIndexOf("=") + 1);
-        String path = "db.properties";
+       int port = Integer.parseInt(args[0].substring(args[0].lastIndexOf("=") + 1));
+       String path = args[1].substring(args[1].lastIndexOf("=") + 1);
+        // String path = "db.properties";
         connectToDataBase(path);
 
         MultiClientServer multiClientServer = new MultiClientServer();
-        multiClientServer.start(7000);
-//        multiClientServer.start(port);
+        // multiClientServer.start(7000);
+       multiClientServer.start(port);
     }
 
     private static Connection connectToDataBase(String path) {

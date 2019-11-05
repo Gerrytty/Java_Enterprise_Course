@@ -5,11 +5,11 @@ import java.util.Scanner;
 public class ChatClientMain {
     public static void main(String[] args) {
 
-//        String ip = args[0].substring(args[0].lastIndexOf("=") + 1);
-//        int port = Integer.parseInt(args[1].substring(args[1].lastIndexOf("=") + 1));
+       String ip = args[0].substring(args[0].lastIndexOf("=") + 1);
+       int port = Integer.parseInt(args[1].substring(args[1].lastIndexOf("=") + 1));
 
-        String ip = "127.0.0.1";
-        int port = 7000;
+        // String ip = "127.0.0.1";
+        // int port = 7000;
         ChatClient chatClient = new ChatClient();
         chatClient.startConnection(ip, port);
         Scanner sc = new Scanner(System.in);

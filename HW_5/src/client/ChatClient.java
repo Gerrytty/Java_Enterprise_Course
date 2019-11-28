@@ -40,9 +40,15 @@ public class ChatClient {
 
                 try {
                     String message = reader.readLine();
+
                     if(message == null) {
                         System.exit(0);
                     }
+
+                    if(message.startsWith("{\"data\":")) {
+                        System.out.println(message);
+                    }
+
                 }
 
                 catch (IOException e) {

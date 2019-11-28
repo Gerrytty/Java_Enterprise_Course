@@ -54,7 +54,7 @@ public class MessageDAO implements DAO<Message> {
 
     public List<Message> pagination(PaginationRequest request) {
 
-        String pagination = "select * from Message limit ?, ?";
+        String pagination = "select * from java_lab_HW.Message limit ?, ?";
 
         List<Message> list = new ArrayList<>();
 
@@ -72,11 +72,11 @@ public class MessageDAO implements DAO<Message> {
                 message.setText(rs.getString("text"));
 
                 list.add(message);
+
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("adding to data base failed");
         }
 
         return list;

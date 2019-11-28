@@ -7,6 +7,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import commands.*;
 import utils.JSON;
+import utils.Password;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -84,9 +85,34 @@ public class MultiClientServer {
 
                         Login login = request.getPayload();
 
-                        user = new User(login.getEmail(), login.getPassword());
-                        userDAO.save(user);
-                        user.setUser_id(userDAO.getUser_id(user));
+                        User u = userDAO.get(login.getEmail());
+
+                        if(u == null) {
+
+                            user.setLogin(login.getEmail());
+                            user.setPassword(Password.hash(login.getPassword()));
+
+                            userDAO.save(user);
+                            user.setUser_id(userDAO.getUser_id(user));
+
+                            writer.println("User added");
+                        }
+
+                        else if (u.getLogin().equals(login.getEmail())) {
+
+                            if(!Password.check(login.getPassword(), u.getPassword())) {
+                                writer.println("Wrong password");
+                            }
+
+                            else {
+                                writer.println("Welcome");
+                                user = u;
+                            }
+                        }
+
+                        else {
+                            System.out.println("WTF");
+                        }
 
                     }
 
@@ -104,6 +130,7 @@ public class MultiClientServer {
                         pr.setData(messageDAO.pagination(pg));
 
                         writer.println(new JSON<PaginationResponse>().createJSON(pr));
+
                     }
 
                     else if(header.equals("logout")) {

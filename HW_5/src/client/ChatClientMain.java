@@ -2,6 +2,7 @@ package client;
 
 import commands.*;
 import utils.JSON;
+import utils.Password;
 
 import java.util.Scanner;
 
@@ -18,7 +19,7 @@ public class ChatClientMain {
         chatClient.startConnection(ip, port);
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Welcome! ");
+        System.out.println("Welcome!");
         System.out.print("Enter your login: ");
         String login = sc.nextLine();
         System.out.print("Enter your password: ");
@@ -40,9 +41,9 @@ public class ChatClientMain {
                 System.exit(0);
             }
 
-            else if(message.equals("/get-messages")) {
+            else if(message.startsWith("/get-messages")) {
 
-                message = new JSON<Request<PaginationRequest>>().createJSON(new Request<>("get-messages",
+                message = new JSON<Request<PaginationRequest>>().createJSON(new Request<>("command",
                         new PaginationRequest(sc.nextInt(), sc.nextInt())));
 
             }
@@ -59,6 +60,7 @@ public class ChatClientMain {
     }
 
     private static void setPortAndIP(String[] args) {
+
         if(args.length >= 2) {
 
             ip = args[0].substring(args[0].lastIndexOf("=") + 1);

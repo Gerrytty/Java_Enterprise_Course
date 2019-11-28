@@ -1,5 +1,7 @@
 package server;
 
+import DAO.UserDAO;
+import ORM.User;
 import utils.ConnectionToDataBase;
 
 import java.io.FileInputStream;
@@ -14,11 +16,13 @@ public class ChatServerStartMain {
     public static void main(String[] args) {
 
         connectToDataBase(path);
+
         MultiClientServer multiClientServer = new MultiClientServer();
         multiClientServer.start(port);
     }
 
     private static Connection connectToDataBase(String path) {
+
         Properties properties = new Properties();
         FileInputStream fileInputStream;
         try {

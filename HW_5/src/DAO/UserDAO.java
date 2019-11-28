@@ -25,7 +25,7 @@ public class UserDAO implements DAO<User> {
         this.user = user;
     }
 
-    private boolean isExists(User user) {
+    public boolean isExists(User user) {
         try {
             Statement st = ConnectionToDataBase.getConnection().createStatement();
             ResultSet rs = st.executeQuery(login);
@@ -85,7 +85,48 @@ public class UserDAO implements DAO<User> {
 
     @Override
     public Optional<User> get(long id) {
+
         return Optional.empty();
+    }
+
+
+    public User get(String login) {
+
+        String select = "SELECT * from java_lab_HW.User where login = ?";
+
+        User user = new User();
+
+        try {
+
+            PreparedStatement ps = ConnectionToDataBase.getConnection().prepareStatement(select);
+            ps.setString(1, login);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                String login1 = rs.getString("login");
+
+                if (login1 == null) {
+                    return null;
+                }
+
+                else {
+                    user.setUser_id(rs.getInt("user_id"));
+                    user.setLogin(rs.getString("login"));
+                    user.setPassword(rs.getString("password"));
+                }
+
+                return user;
+
+            }
+
+            ps.close();
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override
@@ -118,23 +159,18 @@ public class UserDAO implements DAO<User> {
     @Override
     public void save(User user) {
 
-        if(!isExists(user)) {
-            try {
+        try {
 
-                PreparedStatement preparedStatement = ConnectionToDataBase.getConnection().prepareStatement(sql);
-                preparedStatement.setString(1, user.getLogin());
-                preparedStatement.setString(2, user.getPassword());
-                preparedStatement.executeUpdate();
+            PreparedStatement preparedStatement = ConnectionToDataBase.getConnection().prepareStatement(sql);
+            preparedStatement.setString(1, user.getLogin());
+            preparedStatement.setString(2, user.getPassword());
+            preparedStatement.executeUpdate();
 
-            }
-            catch (SQLException e) {
-                e.printStackTrace();
-                System.out.println("adding to data base failed");
-            }
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("adding to data base failed");
         }
 
-        else {
-            System.out.println("User is exists");
-        }
     }
 }

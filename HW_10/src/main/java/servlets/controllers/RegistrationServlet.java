@@ -2,12 +2,8 @@ package servlets.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import servlets.models.User;
-import servlets.services.RegistrationService;
+import servlets.services.interfaces.RegistrationService;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -25,7 +21,7 @@ public class RegistrationServlet extends HttpServlet {
     private RegistrationService registrationService;
 
     @Override
-    public void init(ServletConfig config) throws ServletException {
+    public void init(ServletConfig config) {
         ServletContext context = config.getServletContext();
         ApplicationContext springContext = (ApplicationContext) context.getAttribute("springContext");
         registrationService = springContext.getBean(RegistrationService.class);
@@ -37,7 +33,7 @@ public class RegistrationServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
         User user = User.builder().email(req.getParameter("email")).password(req.getParameter("password")).build();
         registrationService.register(user);

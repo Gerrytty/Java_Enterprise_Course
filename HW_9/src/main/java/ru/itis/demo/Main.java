@@ -1,14 +1,11 @@
 package ru.itis.demo;
 
-import ru.itis.demo.model.Movie;
-import ru.itis.demo.model.NetflixUser;
 import ru.itis.demo.repositories.movie.MovieRepository;
 import ru.itis.demo.repositories.movie.MovieRepositoryImpl;
 import ru.itis.demo.repositories.user.UserRepository;
 import ru.itis.demo.repositories.user.UserRepositoryImpl;
 import ru.itis.demo.util.ConnectionToDataBase;
 
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {

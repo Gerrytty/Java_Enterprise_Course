@@ -1,15 +1,15 @@
 package servlets.services;
 
-import freemarker.template.TemplateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import servlets.models.Mail;
 import servlets.models.User;
-import servlets.repositories.UsersRepository;
+import servlets.repositories.interfaces.UsersRepository;
+import servlets.services.interfaces.MailService;
+import servlets.services.interfaces.RegistrationService;
+import servlets.services.interfaces.TemplateForMail;
 
-import javax.mail.MessagingException;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,10 +22,20 @@ public class RegistrationServiceImpl implements RegistrationService {
     @Value("${link.to.confirm}")
     private String link;
 
+    @Value("${mail.template}")
+    private String templateName;
+
     @Autowired
-    MailService emailService;
+    private MailService emailService;
+
+    @Autowired
+    private TemplateForMail template;
+
+    @Autowired
+    private UsersRepository usersRepository;
 
     private void send(User user) {
+
         Mail mail = new Mail();
         mail.setFrom(from);
         mail.setTo(user.getEmail());
@@ -34,19 +44,13 @@ public class RegistrationServiceImpl implements RegistrationService {
         Map model = new HashMap();
         model.put("name", user.getEmail());
         model.put("location", "Russia");
-//        model.put("signature", "https://memorynotfound.com");
         model.put("link", link);
         mail.setModel(model);
 
-        try {
-            emailService.sendSimpleMessage(mail);
-        } catch (MessagingException | IOException | TemplateException e) {
-            e.printStackTrace();
-        }
-    }
+        String html = template.getHtml(mail, templateName);
 
-    @Autowired
-    private UsersRepository usersRepository;
+        emailService.send(mail, html, true);
+    }
 
     @Override
     public void register(User user) {

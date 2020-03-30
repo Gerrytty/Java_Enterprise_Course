@@ -1,31 +1,35 @@
 package ru.itis.demo.repositories.user;
 import lombok.NoArgsConstructor;
+import ru.itis.demo.model.Movie;
 import ru.itis.demo.model.NetflixUser;
 import ru.itis.demo.repositories.RowMapper;
 import ru.itis.demo.repositories.movie.MovieRepository;
+import ru.itis.demo.repositories.movie.MovieRepositoryImpl;
 import ru.itis.demo.util.ConnectionToDataBase;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.sql.Date;
+import java.util.*;
 
 @NoArgsConstructor
 public class UserRepositoryImpl implements UserRepository {
 
     private Connection connection;
 
-    private String insertString = "insert into NetflixUser(firstName, lastName, email, password, birthDate)" +
+    private final String insertString = "insert into NetflixUser(firstName, lastName, email, password, birthDate)" +
             " values (?, ?, ?, ?, ?)";
 
-    private String selectString = "select * from NetflixUser where id = ? LIMIT 1";
+    private final String selectString = "select * from NetflixUser where userId = ? LIMIT 1";
 
-    private String select = "select * from NetflixUser";
+    private final String select = "select * from NetflixUser";
 
-    private String deleteString = "delete from NetflixUser where id = ?";
+    private final String deleteString = "delete from NetflixUser where userId = ?";
+
+    private final String selectAll = "select * from NetflixUser right join Movie" +
+            " on NetflixUser.userId = Movie.userId";
 
     private RowMapper<NetflixUser> mapper = rs -> new NetflixUser(
-            rs.getLong("id"),
+            rs.getLong("userId"),
             rs.getString("firstName"),
             rs.getString("lastName"),
             rs.getString("email"),
@@ -70,21 +74,67 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
+//    @Override
+//    public List<NetflixUser> findAll() {
+//
+//        try (Statement statement = connection.createStatement()) {
+//
+//            ResultSet rs = statement.executeQuery(select);
+//            List<NetflixUser> list = new ArrayList<>();
+//
+//            while (rs.next()) {
+//                NetflixUser user = mapper.mapRow(rs);
+//                user.setWatchedMovies(movieRepository.findAllByUserId(user.getId()));
+//                list.add(user);
+//            }
+//
+//            return list;
+//
+//        } catch (SQLException e) {
+//            throw new IllegalStateException(e);
+//        }
+//
+//    }
+
     @Override
     public List<NetflixUser> findAll() {
 
         try (Statement statement = connection.createStatement()) {
 
-            ResultSet rs = statement.executeQuery(select);
-            List<NetflixUser> list = new ArrayList<>();
+            MovieRepository movieRepository = new MovieRepositoryImpl(connection);
+            RowMapper<Movie> movieRowMapper = movieRepository.getMapper();
+
+            ResultSet rs = statement.executeQuery(selectAll);
+
+            Map<Long, NetflixUser> usersMap = new HashMap<>();
 
             while (rs.next()) {
-                NetflixUser user = mapper.mapRow(rs);
-                user.setWatchedMovies(movieRepository.findAllByUserId(user.getId()));
-                list.add(user);
+
+                long id = rs.getLong("userId");
+
+                if (!usersMap.containsKey(id)) {
+
+                    List<Movie> movies = new ArrayList<>();
+                    movies.add(movieRowMapper.mapRow(rs));
+
+                    NetflixUser user = mapper.mapRow(rs);
+
+                    user.setWatchedMovies(movies);
+
+                    usersMap.put(id, user);
+
+                }
+
+                else {
+
+                    usersMap.get(id).getWatchedMovies().add(movieRowMapper.mapRow(rs));
+
+                }
+
+
             }
 
-            return list;
+            return new ArrayList<>(usersMap.values());
 
         } catch (SQLException e) {
             throw new IllegalStateException(e);

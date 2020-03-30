@@ -14,11 +14,11 @@ public class MovieRepositoryImpl implements MovieRepository {
 
     private String insertString = "insert into Movie(name, producer, yearOfIssue, userId) values (?, ?, ?, ?)";
     private String selectAllString = "select * from Movie";
-    private String selectString = "select * from Movie where id = ? limit 1";
-    private String deleteString = "delete from Movie where id = ?";
+    private String selectString = "select * from Movie where movieId = ? limit 1";
+    private String deleteString = "delete from Movie where movieId = ?";
 
     private RowMapper<Movie> mapper = rs -> new Movie(
-            rs.getLong("id"),
+            rs.getLong("movieId"),
             rs.getString("name"),
             rs.getString("producer"),
             rs.getDate("yearOfIssue"),
@@ -29,7 +29,10 @@ public class MovieRepositoryImpl implements MovieRepository {
         this.connection = connection;
     }
 
-
+    @Override
+    public RowMapper<Movie> getMapper() {
+        return mapper;
+    }
 
     @Override
     public Optional<Movie> findOne(Long id) {

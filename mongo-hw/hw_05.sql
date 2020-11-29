@@ -1,6 +1,7 @@
 use javalabdb
 
 db.createCollection("airline");
+db.createCollection("airplane");
 
 db.airline.insert(
     {
@@ -33,9 +34,7 @@ db.airplane.insert(
             }
         ]
     }
-    );
-
-db.createCollection("airplane");  
+    );  
 
 db.airplane.insert(
     {

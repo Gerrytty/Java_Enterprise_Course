@@ -1,4 +1,4 @@
-package com.example.demo;
+package ru.itis.mongohateoas.models;
 
 import com.querydsl.core.annotations.QueryEntity;
 import lombok.AllArgsConstructor;

@@ -1,0 +1,1 @@
+GET http://localhost:9080/airplanes/search?number_of_seats=400

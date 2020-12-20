@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class AirplaneRequest {
     private Float cost_mln_dollars;
-    private Float number_of_seats;
+    private Integer number_of_seats;
 }

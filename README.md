@@ -15,6 +15,7 @@ ___
 ### HW 3
 #### Hateoas service
 [Hateoas service](https://github.com/Gerrtty/javalab-hateoas-project)
+Тесты НЕ работают!!! (работали пока я не добавила секьюрити, у меня так и не получилось их починить)
 
 ___
 

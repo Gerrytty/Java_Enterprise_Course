@@ -43,3 +43,5 @@ ___
 [QueryDsl MongoDB](https://github.com/Gerrtty/Java_Enterprise_Course/tree/master/dsl)
 
 ___
+
+![alt text](https://github.com/Gerrtty/Java_Enterprise_Course/blob/master/CD176B04-B363-4AEC-95BF-194EFAD22395.jpeg "Описание будет тут")​
